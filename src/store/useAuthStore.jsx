@@ -1,7 +1,8 @@
-import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
+import {create} from "zustand";
+import {createJSONStorage, persist} from "zustand/middleware";
 import api from "../api/axios";
-import { toast } from "sonner";
+import {toast} from "sonner";
+
 export const useAuthStore = create(
   persist(
     (set, get) => ({
@@ -13,9 +14,22 @@ export const useAuthStore = create(
       isLoadingAuth: true,
       signup: async (name, email, password) => {
         set({ isLoading: true, error: null });
+
         try {
           const response = await api.post(`/signup`, { name, email, password });
+
+          if (response.data?.error === "Email already in use") {
+            toast.error("Email already in use");
+            set({
+              isLoading: false,
+              isAuthenticated: false,
+              error: "Email already in use",
+            });
+            return;
+          }
+
           const { accessToken, user } = response.data;
+
           set({
             accessToken,
             user,
@@ -27,13 +41,17 @@ export const useAuthStore = create(
           return response.data;
         } catch (error) {
           const errorMessage =
+              error.response?.data?.error ||
             error.response?.data?.message ||
             "Error signing up. Please try again.";
+
           set({
             error: errorMessage,
             isLoading: false,
             isAuthenticated: false,
           });
+
+          toast.error(errorMessage);
           throw new Error(errorMessage);
         }
       },
@@ -50,12 +68,13 @@ export const useAuthStore = create(
             isLoading: false,
             error: null,
           });
-          toast.message(response?.data?.message)
+          toast.success("Logged In Successfully!");
           return response.data;
         } catch (error) {
           const errorMessage =
             error.response?.data?.message ||
             "Login failed. Invalid email or password.";
+          toast.error(errorMessage);
           set({
             error: errorMessage,
             isLoading: false,
@@ -82,7 +101,7 @@ export const useAuthStore = create(
             isLoading: false,
             error: null,
           });
-          toast.message("You have been logged out.")
+          toast.error("You have been logged out.");
         }
       },
 
@@ -170,51 +189,60 @@ export const useAuthStore = create(
       },
 
       forgotPassword: async (email) => {
-        set({ isLoading: true, error: null});
+        set({isLoading: true, error: null});
         try {
-          const response = await api.post(`/forgot-password`, { email });
-          set({
-            isLoading: false,
-            error: null,
-          });
+          const response = await api
+              .post(`/forgot-password`, {email})
+              .then(() => {
+                toast.success("Check your email!");
+                set({
+                  isLoading: false,
+                  error: null,
+                });
+              });
           return response.data.message;
         } catch (error) {
           const errorMessage =
             error.response?.data?.message ||
             "Error sending password reset email.";
+          toast.error(errorMessage);
           set({ isLoading: false, error: errorMessage });
           throw new Error(errorMessage);
         }
       },
 
       resetPassword: async (token, password) => {
-        set({ isLoading: true, error: null});
+        set({isLoading: true, error: null});
         try {
-          const response = await api.post(`/reset-password/${token}`, {
-            password,
-          });
+          const response = await api
+              .post(`/reset-password/${token}`, {
+                password,
+              })
+              .then(() => toast.success("Password Reset Successfully!"));
           set({
             isLoading: false,
             error: null,
           });
-          return response.data.message;
+          return response?.data.message;
         } catch (error) {
           const errorMessage =
             error.response?.data?.message || "Error resetting password.";
+          toast.error(errorMessage);
           set({ isLoading: false, error: errorMessage });
           throw new Error(errorMessage);
         }
       },
 
       testProtected: async () => {
-        set({ isLoading: true, error: null});
+        set({isLoading: true, error: null});
         try {
-          const response = await api.get(`/protected`);
+          const response = await api
+              .get(`/protected`)
+              .then((response) => toast.success(response.data.message));
           set({
             isLoading: false,
             error: null,
           });
-
           return response.data;
         } catch (error) {
           const errorMessage =
@@ -224,7 +252,7 @@ export const useAuthStore = create(
           throw new Error(errorMessage);
         }
       },
-      clearMessages: () => set({ error: null}),
+      clearMessages: () => set({error: null}),
     }),
     {
       name: "auth-storage",
@@ -247,4 +275,3 @@ export const useAuthStore = create(
     },
   ),
 );
-

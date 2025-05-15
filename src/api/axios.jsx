@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useAuthStore } from "@/store/useAuthStore";
+import {useAuthStore} from "@/store/useAuthStore";
 
 const api = axios.create({
   baseURL: "http://localhost:5002/api/auth",
@@ -65,14 +65,14 @@ api.interceptors.response.use(
           processQueue(null, newAccessToken);
           return axios(originalRequest);
         } else {
-          authStore.logout();
+            await authStore.logout();
           processQueue(new Error("Session expired. Please login again."), null);
           return Promise.reject(
             new Error("Session expired. Please login again."),
           );
         }
       } catch (refreshError) {
-        authStore.logout();
+          await authStore.logout();
         processQueue(refreshError, null);
         return Promise.reject(refreshError);
       } finally {

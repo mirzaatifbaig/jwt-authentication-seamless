@@ -1,22 +1,12 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import {useState} from "react";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import api from "@/api/axios";
-import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "@/store/useAuthStore";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage,} from "@/components/ui/form";
+import {useNavigate} from "react-router-dom";
+import {useAuthStore} from "@/store/useAuthStore";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address"),

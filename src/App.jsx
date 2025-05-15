@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
@@ -7,18 +7,17 @@ import NotFound from "@/pages/NotFound";
 import Navbar from "@/components/Navbar";
 import ForgotPassword from "@/pages/ForgetPassword";
 import ResetPassword from "@/pages/ResetPassword";
-import { Toaster } from "sonner";
-import { useAuthStore } from "@/store/useAuthStore";
+import {Toaster} from "sonner";
+import {useAuthStore} from "@/store/useAuthStore";
 import Loading from "@/components/Loading.jsx";
 
 const ProtectedRoute = ({ children }) => {
-
-  const { isAuthenticated, isLoading, isLoadingAuth } = useAuthStore();
+    const {isAuthenticated, isLoading} = useAuthStore();
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
   if (isLoading) {
-      return <Loading />;
+      return <Loading/>;
   }
 
   return children;
