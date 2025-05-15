@@ -9,13 +9,16 @@ import ForgotPassword from "@/pages/ForgetPassword";
 import ResetPassword from "@/pages/ResetPassword";
 import { Toaster } from "sonner";
 import { useAuthStore } from "@/store/useAuthStore";
-import { useEffect } from "react";
 import Loading from "@/components/Loading.jsx";
 
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated } = useAuthStore();
+
+  const { isAuthenticated, isLoading, isLoadingAuth } = useAuthStore();
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
+  }
+  if (isLoading) {
+      return <Loading />;
   }
 
   return children;

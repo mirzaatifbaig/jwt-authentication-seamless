@@ -24,6 +24,8 @@ const formSchema = z.object({
 
 export default function Login() {
   const navigate = useNavigate();
+    const {login, isLoading, isAuthenticated} =  useAuthStore();
+    if (isAuthenticated) navigate("/dashboard");
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,8 +33,6 @@ export default function Login() {
       password: "",
     },
   });
-
-  const { login, isLoading } = useAuthStore();
 
   function onSubmit(data) {
     login(data.email, data.password).then(() => navigate("/dashboard"));

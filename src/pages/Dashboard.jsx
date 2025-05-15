@@ -22,9 +22,11 @@ const Dashboard = () => {
       <p className="text-lg">
         Hello, <strong>{user?.email}</strong>!
       </p>
-      <p className="text-muted-foreground mt-2">This is protected content.</p>
-      <Button onClick={logout}>Logout</Button>
-      <Button onClick={test}>Access Protected Route</Button>
+      <p className="text-muted-foreground p-2 mt-2">This is protected content.</p>
+        <div className={"flex flex-col items-center justify-around"}>
+            <Button className={""} onClick={logout}>Logout</Button>
+            <Button  className={"mt-4"} onClick={test}>Access Protected Route</Button>
+        </div>
     </div>
   );
 };

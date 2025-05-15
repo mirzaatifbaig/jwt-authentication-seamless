@@ -1,10 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import {useAuthStore} from "@/store/useAuthStore.jsx";
 
 const Home = () => {
   const navigate = useNavigate();
-
+  const {isAuthenticated} =  useAuthStore();
+  if (isAuthenticated) navigate("/dashboard");
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <h1 className="text-4xl font-bold mb-6">Welcome to Our App</h1>

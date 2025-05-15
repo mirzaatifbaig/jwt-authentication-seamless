@@ -13,9 +13,12 @@ const Navbar = () => {
         <span className="text-lg font-semibold m-4">App</span>
       </div>
       <div className="flex items-center space-x-2 mx-4">
-        {isAuthenticated && <Button onClick={logout}>Logout</Button>}
+          {isAuthenticated && <Button onClick={logout}>Logout</Button>}
         {!isAuthenticated && (
-          <Button onClick={() => navigate("/signup")}>Signup</Button>
+            <>
+                <Button onClick={() => navigate("/signup")}>Signup</Button>
+                <Button onClick={() => navigate("/login")}>Login</Button>
+            </>
         )}
       </div>
     </nav>

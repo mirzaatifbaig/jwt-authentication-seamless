@@ -25,10 +25,11 @@ const formSchema = z.object({
 
 export default function Signup() {
   const navigate = useNavigate();
+    const { isAuthenticated, signup} =  useAuthStore();
+    if (isAuthenticated) navigate("/dashboard");
   const form = useForm({
     resolver: zodResolver(formSchema),
   });
-  const { signup } = useAuthStore();
 
   function onSubmit(data) {
     console.log(data);

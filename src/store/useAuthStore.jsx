@@ -11,10 +11,8 @@ export const useAuthStore = create(
       error: null,
       isLoading: false,
       isLoadingAuth: true,
-      message: null,
-
       signup: async (name, email, password) => {
-        set({ isLoading: true, error: null, message: null });
+        set({ isLoading: true, error: null });
         try {
           const response = await api.post(`/signup`, { name, email, password });
           const { accessToken, user } = response.data;
@@ -24,8 +22,8 @@ export const useAuthStore = create(
             isAuthenticated: true,
             isLoading: false,
             error: null,
-            message: "Signup successful!",
           });
+
           return response.data;
         } catch (error) {
           const errorMessage =
@@ -41,7 +39,7 @@ export const useAuthStore = create(
       },
 
       login: async (email, password) => {
-        set({ isLoading: true, error: null, message: null });
+        set({ isLoading: true, error: null });
         try {
           const response = await api.post(`/login`, { email, password });
           const { accessToken, user } = response.data;
@@ -51,8 +49,8 @@ export const useAuthStore = create(
             isAuthenticated: true,
             isLoading: false,
             error: null,
-            message: "Login successful!",
           });
+          toast.message(response?.data?.message)
           return response.data;
         } catch (error) {
           const errorMessage =
@@ -83,8 +81,8 @@ export const useAuthStore = create(
             isAuthenticated: false,
             isLoading: false,
             error: null,
-            message: "You have been logged out.",
           });
+          toast.message("You have been logged out.")
         }
       },
 
@@ -156,15 +154,15 @@ export const useAuthStore = create(
                     "Failed to fetch user after token refresh:",
                     meError.message,
                   );
-                  get().logout();
+                  await get().logout();
                   return false;
                 }
               } else {
-                get().logout();
+                await get().logout();
                 return false;
               }
             } else {
-              get().logout();
+              await get().logout();
               return false;
             }
           }
@@ -172,13 +170,10 @@ export const useAuthStore = create(
       },
 
       forgotPassword: async (email) => {
-        set({ isLoading: true, error: null, message: null });
+        set({ isLoading: true, error: null});
         try {
           const response = await api.post(`/forgot-password`, { email });
           set({
-            message:
-              response.data.message ||
-              "Password reset instructions sent if email is registered.",
             isLoading: false,
             error: null,
           });
@@ -193,14 +188,12 @@ export const useAuthStore = create(
       },
 
       resetPassword: async (token, password) => {
-        set({ isLoading: true, error: null, message: null });
+        set({ isLoading: true, error: null});
         try {
           const response = await api.post(`/reset-password/${token}`, {
             password,
           });
           set({
-            message:
-              response.data.message || "Password has been reset successfully.",
             isLoading: false,
             error: null,
           });
@@ -214,15 +207,14 @@ export const useAuthStore = create(
       },
 
       testProtected: async () => {
-        set({ isLoading: true, error: null, message: null });
+        set({ isLoading: true, error: null});
         try {
           const response = await api.get(`/protected`);
           set({
-            message: response.data.message,
             isLoading: false,
             error: null,
           });
-          toast.message(get().message);
+
           return response.data;
         } catch (error) {
           const errorMessage =
@@ -232,7 +224,7 @@ export const useAuthStore = create(
           throw new Error(errorMessage);
         }
       },
-      clearMessages: () => set({ error: null, message: null }),
+      clearMessages: () => set({ error: null}),
     }),
     {
       name: "auth-storage",
@@ -256,25 +248,3 @@ export const useAuthStore = create(
   ),
 );
 
-/*
-import React, { useEffect } from 'react';
-import { useAuthStore } from './store/useAuthStore'; 
-function App() {
-  const { checkAuth, isLoadingAuth } = useAuthStore(state => ({
-    checkAuth: state.checkAuth,
-    isLoadingAuth: state.isLoadingAuth
-  }));
-
-  useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
-
-  if (isLoadingAuth) {
-    return <div>Loading application...</div>;   }
-
-    return (
-      );
-}
-
-export default App;
-*/
