@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/useAuthStore";
-import { toast } from "sonner";
 import Loading from "@/components/Loading.jsx";
 import { useEffect } from "react";
 
@@ -9,7 +8,7 @@ const Dashboard = () => {
     useAuthStore();
 
   const test = () => {
-    testProtected()
+    testProtected();
   };
   useEffect(() => {
     checkAuth();

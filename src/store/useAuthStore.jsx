@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import api from "../api/axios";
-import {toast} from "sonner";
+import { toast } from "sonner";
 export const useAuthStore = create(
   persist(
     (set, get) => ({
@@ -140,7 +140,7 @@ export const useAuthStore = create(
               "Access token validation failed, attempting refresh:",
               error.message,
             );
-            if (error.response?.status === 401 ) {
+            if (error.response?.status === 401) {
               const newAccessToken = await get().refreshTokenFn();
               if (newAccessToken) {
                 try {
@@ -168,7 +168,8 @@ export const useAuthStore = create(
               return false;
             }
           }
-        }      },
+        }
+      },
 
       forgotPassword: async (email) => {
         set({ isLoading: true, error: null, message: null });
@@ -221,7 +222,7 @@ export const useAuthStore = create(
             isLoading: false,
             error: null,
           });
-          toast.message(get().message)
+          toast.message(get().message);
           return response.data;
         } catch (error) {
           const errorMessage =
