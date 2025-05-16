@@ -1,4 +1,4 @@
-import {Navigate, Route, Routes} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
@@ -8,20 +8,8 @@ import Navbar from "@/components/Navbar";
 import ForgotPassword from "@/pages/ForgetPassword";
 import ResetPassword from "@/pages/ResetPassword";
 import {Toaster} from "sonner";
-import {useAuthStore} from "@/store/useAuthStore";
-import Loading from "@/components/Loading.jsx";
+import ProtectedRoute from "@/pages/ProtectedRoute.jsx";
 
-const ProtectedRoute = ({ children }) => {
-    const {isAuthenticated, isLoading} = useAuthStore();
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-  if (isLoading) {
-      return <Loading/>;
-  }
-
-  return children;
-};
 function App() {
   return (
     <div className="min-h-screen flex items-center justify-center">

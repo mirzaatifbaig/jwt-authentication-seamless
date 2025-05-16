@@ -6,10 +6,6 @@ import {useEffect} from "react";
 const Dashboard = () => {
   const { isCheckingAuth, checkAuth, user, logout, testProtected } =
     useAuthStore();
-
-  const test = () => {
-    testProtected();
-  };
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
@@ -29,7 +25,7 @@ const Dashboard = () => {
             <Button className={""} onClick={logout}>
                 Logout
             </Button>
-            <Button className={"mt-4"} onClick={test}>
+            <Button className={"mt-4"} onClick={testProtected}>
                 Access Protected Route
             </Button>
         </div>

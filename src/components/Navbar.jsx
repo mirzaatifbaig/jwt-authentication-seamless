@@ -1,7 +1,7 @@
-import { Home } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useAuthStore } from "@/store/useAuthStore";
-import { useNavigate } from "react-router-dom";
+import {Home} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {useAuthStore} from "@/store/useAuthStore";
+import {useNavigate} from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
