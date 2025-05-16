@@ -7,7 +7,7 @@ import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, Form
 import {Input} from "@/components/ui/input";
 import {PasswordInput} from "@/components/ui/password-input";
 import {useAuthStore} from "@/store/useAuthStore";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const formSchema = z.object({
   name: z.string().min(1).min(4),
@@ -86,6 +86,17 @@ export default function Signup() {
         />
 
         <Button type="submit">Submit</Button>
+          <Link to={"/login"}>
+              {" "}
+              <span
+                  className={
+                      "hover:underline hover:text-cyan-900 text-sm p-3 text-cyan-600"
+                  }
+              >
+            {" "}
+                  Login Instead?
+          </span>
+          </Link>
       </form>
     </Form>
   );

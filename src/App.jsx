@@ -9,6 +9,8 @@ import ForgotPassword from "@/pages/ForgetPassword";
 import ResetPassword from "@/pages/ResetPassword";
 import {Toaster} from "sonner";
 import ProtectedRoute from "@/pages/ProtectedRoute.jsx";
+import QRCode from "@/pages/QRCode.jsx";
+import FALogin from "@/pages/FALogin.jsx";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+          <Route path="/FALogin" element={<FALogin/>}/>
+          <Route path="/qrcode" element={<QRCode/>}/>
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />

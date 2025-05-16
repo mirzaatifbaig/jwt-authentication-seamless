@@ -1,6 +1,7 @@
 "use client";
 
 import {useForm} from "react-hook-form";
+import {Link, useNavigate} from "react-router-dom";
 import {zodResolver} from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {Button} from "@/components/ui/button";
@@ -8,7 +9,6 @@ import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, Form
 import {Input} from "@/components/ui/input";
 import {PasswordInput} from "@/components/ui/password-input";
 import {useAuthStore} from "@/store/useAuthStore";
-import {useNavigate} from "react-router-dom";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -17,7 +17,8 @@ const formSchema = z.object({
 
 export default function Login() {
   const navigate = useNavigate();
-    const {login, isLoading, isAuthenticated} = useAuthStore();
+    const {login, twoFactorEnabled, isLoading, isAuthenticated} =
+        useAuthStore();
     if (isAuthenticated) navigate("/dashboard");
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -28,7 +29,11 @@ export default function Login() {
   });
 
   function onSubmit(data) {
-    login(data.email, data.password).then(() => navigate("/dashboard"));
+      login(data.email, data.password).then(() => {
+          if (twoFactorEnabled) {
+              navigate("/2FALogin");
+          } else navigate("/dashboard");
+      });
   }
 
   return (
@@ -66,10 +71,20 @@ export default function Login() {
             </FormItem>
           )}
         />
-
         <Button type="submit" disabled={isLoading}>
           {isLoading ? "Logging in..." : "Submit"}
         </Button>
+          <Link to={"/forgot-password"}>
+              {" "}
+              <span
+                  className={
+                      "hover:underline hover:text-cyan-900 text-sm p-3 text-cyan-600"
+                  }
+              >
+            {" "}
+                  Forgot Password?
+          </span>
+          </Link>
       </form>
     </Form>
   );

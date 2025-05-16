@@ -7,6 +7,8 @@ export const useAuthStore = create(
   persist(
     (set, get) => ({
       accessToken: null,
+      twoFactorEnabled: false,
+      qrCode: null,
       user: null,
       isAuthenticated: false,
       error: null,
@@ -111,9 +113,9 @@ export const useAuthStore = create(
         set({ isLoadingAuth: true, error: null });
         try {
           const response = await api.post(`/refresh-token`);
-          const accessToken = response?.accessToken;
+          const accessToken = response?.data.accessToken;
           set({
-            accessToken: response?.accessToken,
+            accessToken: accessToken,
             isAuthenticated: true,
             isLoadingAuth: false,
             error: null,
@@ -144,6 +146,7 @@ export const useAuthStore = create(
             const response = await api.get(`/me`);
             set({
               user: response.data.user,
+              twoFactorEnabled: response.data.user.twoFactorEnabled,
               isAuthenticated: true,
               isLoadingAuth: false,
               error: null,
@@ -185,7 +188,6 @@ export const useAuthStore = create(
         }
       },
 
-      // FIXED VERSION
       forgotPassword: async (email) => {
         set({isLoading: true, error: null});
         try {
@@ -203,6 +205,93 @@ export const useAuthStore = create(
               error?.message || "Error sending password reset email.";
           toast.error(errorMessage);
           set({ isLoading: false, error: errorMessage });
+          throw new Error(errorMessage);
+        }
+      },
+      login2FA: async (token) => {
+        set({isLoading: true, error: null});
+        try {
+          const response = await api.post(`/2fa/login`, {
+            userId: get().user.id,
+            token: token,
+          });
+          const {accessToken, user} = response.data;
+          set({
+            accessToken,
+            user,
+            isAuthenticated: true,
+            isLoading: false,
+            error: null,
+          });
+          toast.success("2FA Login Successful!");
+          return response.data;
+        } catch (error) {
+          const errorMessage = error?.message || "2FA verification failed.";
+          toast.error(errorMessage);
+          set({isLoading: false, error: errorMessage});
+          throw new Error(errorMessage);
+        }
+      },
+      disable2FA: async () => {
+        set({isLoading: true, error: null});
+        try {
+          await api.post(`/2fa/disable`, {
+            userId: get().user.id,
+          });
+          toast.success("2FA Disabled!");
+          set({
+            qrCode: null,
+            isLoading: false,
+            error: null,
+          });
+        } catch (error) {
+          const errorMessage = error?.message || "Error disabling 2FA.";
+          toast.error(errorMessage);
+          set({isLoading: false, error: errorMessage});
+          throw new Error(errorMessage);
+        }
+      },
+      verify2FA: async (token) => {
+        set({isLoading: true, error: null});
+        try {
+          const response = await api.post(`/2fa/verify-setup`, {
+            userId: get().user.id,
+            token: token,
+          });
+
+          toast.success(response.data.message);
+          set({
+            qrCode: response.data.qrCode,
+            isLoading: false,
+            error: null,
+          });
+
+          return response.data.qrCode;
+        } catch (error) {
+          const errorMessage = error?.message || "Error enabling 2FA.";
+          toast.error(errorMessage);
+          set({isLoading: false, error: errorMessage});
+          throw new Error(errorMessage);
+        }
+      },
+      enable2FA: async () => {
+        set({isLoading: true, error: null});
+        try {
+          const response = await api.post(`/2fa/setup`, {
+            userId: get().user.id,
+          });
+          toast.success("2FA Enabled!");
+          set({
+            qrCode: response.data.qrCode,
+            isLoading: false,
+            error: null,
+          });
+
+          return response.data.qrCode;
+        } catch (error) {
+          const errorMessage = error?.message || "Error enabling 2FA.";
+          toast.error(errorMessage);
+          set({isLoading: false, error: errorMessage});
           throw new Error(errorMessage);
         }
       },
@@ -255,6 +344,7 @@ export const useAuthStore = create(
       partialize: (state) => ({
         accessToken: state.accessToken,
         user: state.user,
+        qrCode: state.qrCode,
         isAuthenticated: state.isAuthenticated,
       }),
       onRehydrateStorage: () => {
