@@ -29,11 +29,12 @@ export default function Login() {
   });
 
   function onSubmit(data) {
-      login(data.email, data.password).then(() => {
+      const response = login(data.email, data.password).then(() => {
           if (twoFactorEnabled) {
-              navigate("/2FALogin");
+              navigate("/FALogin");
           } else navigate("/dashboard");
       });
+
   }
 
   return (

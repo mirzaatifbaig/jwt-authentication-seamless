@@ -60,6 +60,7 @@ export const useAuthStore = create(
         set({ isLoading: true, error: null });
         try {
           const response = await api.post(`/login`, { email, password });
+          console.log(response.data);
           const { accessToken, user } = response.data;
           set({
             accessToken,
@@ -212,8 +213,8 @@ export const useAuthStore = create(
         set({isLoading: true, error: null});
         try {
           const response = await api.post(`/2fa/login`, {
-            userId: get().user.id,
             token: token,
+            userId: get().user.id,
           });
           const {accessToken, user} = response.data;
           set({

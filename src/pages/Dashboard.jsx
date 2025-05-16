@@ -36,7 +36,7 @@ const Dashboard = () => {
         </p>
         <p className="text-lg">
             2Factor Enabled:{" "}
-            <strong>{user.twoFactorEnabled ? <>Yes</> : <>Not Yet</>}</strong>
+            <strong>{user?.twoFactorEnabled ? <>Yes</> : <>Not Yet</>}</strong>
         </p>
         <div className={"flex flex-col items-center justify-around"}>
             <Button className={""} onClick={logout}>
