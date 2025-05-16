@@ -18,7 +18,7 @@ export const useAuthStore = create(
         try {
           const response = await api.post(`/signup`, { name, email, password });
 
-          if (response.data?.error === "Email already in use") {
+          if (response?.error === "Email already in use") {
             toast.error("Email already in use");
             set({
               isLoading: false,
@@ -41,9 +41,7 @@ export const useAuthStore = create(
           return response.data;
         } catch (error) {
           const errorMessage =
-              error.response?.data?.error ||
-            error.response?.data?.message ||
-            "Error signing up. Please try again.";
+              error?.message || "Error signing up. Please try again.";
 
           set({
             error: errorMessage,
@@ -72,8 +70,7 @@ export const useAuthStore = create(
           return response.data;
         } catch (error) {
           const errorMessage =
-            error.response?.data?.message ||
-            "Login failed. Invalid email or password.";
+              error?.message || "Login failed. Invalid email or password.";
           toast.error(errorMessage);
           set({
             error: errorMessage,
@@ -91,7 +88,7 @@ export const useAuthStore = create(
         } catch (apiError) {
           console.error(
             "Error calling /logout endpoint:",
-            apiError.response?.data?.message || apiError.message,
+              apiError?.message || apiError.message,
           );
         } finally {
           set({
@@ -114,9 +111,9 @@ export const useAuthStore = create(
         set({ isLoadingAuth: true, error: null });
         try {
           const response = await api.post(`/refresh-token`);
-          const accessToken = response.data.accessToken;
+          const accessToken = response?.accessToken;
           set({
-            accessToken: response?.data?.accessToken,
+            accessToken: response?.accessToken,
             isAuthenticated: true,
             isLoadingAuth: false,
             error: null,
@@ -125,7 +122,7 @@ export const useAuthStore = create(
         } catch (error) {
           console.error(
             "Failed to refresh token:",
-            error.response?.data?.message || error.message,
+              error?.message || error.message,
           );
           set({
             accessToken: null,
@@ -157,7 +154,7 @@ export const useAuthStore = create(
               "Access token validation failed, attempting refresh:",
               error.message,
             );
-            if (error.response?.status === 401) {
+            if (error?.status === 401) {
               const newAccessToken = await get().refreshTokenFn();
               if (newAccessToken) {
                 try {
@@ -188,45 +185,43 @@ export const useAuthStore = create(
         }
       },
 
+      // FIXED VERSION
       forgotPassword: async (email) => {
         set({isLoading: true, error: null});
         try {
-          const response = await api
-              .post(`/forgot-password`, {email})
-              .then(() => {
-                toast.success("Check your email!");
-                set({
-                  isLoading: false,
-                  error: null,
-                });
-              });
-          return response.data.message;
+          const response = await api.post(`/forgot-password`, {email});
+
+          toast.success("Check your email!");
+          set({
+            isLoading: false,
+            error: null,
+          });
+
+          return response.message;
         } catch (error) {
           const errorMessage =
-            error.response?.data?.message ||
-            "Error sending password reset email.";
+              error?.message || "Error sending password reset email.";
           toast.error(errorMessage);
           set({ isLoading: false, error: errorMessage });
           throw new Error(errorMessage);
         }
       },
 
-      resetPassword: async (token, password) => {
+      resetPassword: async (token, newPassword) => {
         set({isLoading: true, error: null});
         try {
-          const response = await api
-              .post(`/reset-password/${token}`, {
-                password,
-              })
-              .then(() => toast.success("Password Reset Successfully!"));
+          const response = await api.post(`/reset-password`, {
+            token,
+            newPassword,
+          });
+          toast.success("Password Reset Successfully!");
           set({
             isLoading: false,
             error: null,
           });
-          return response?.data.message;
+          return response?.message;
         } catch (error) {
-          const errorMessage =
-            error.response?.data?.message || "Error resetting password.";
+          const errorMessage = error?.message || "Error resetting password.";
           toast.error(errorMessage);
           set({ isLoading: false, error: errorMessage });
           throw new Error(errorMessage);
@@ -243,10 +238,10 @@ export const useAuthStore = create(
             isLoading: false,
             error: null,
           });
-          return response.data;
+          return response?.data;
         } catch (error) {
           const errorMessage =
-            error.response?.data?.message ||
+              error.response?.message ||
             `Failed to access protected route. Status: ${error.response?.status || "unknown"}`;
           set({ isLoading: false, error: errorMessage });
           throw new Error(errorMessage);

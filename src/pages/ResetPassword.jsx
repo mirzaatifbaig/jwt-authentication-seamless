@@ -1,19 +1,11 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import { PasswordInput } from "@/components/ui/password-input";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { useParams } from "react-router-dom";
-import { useAuthStore } from "@/store/useAuthStore";
+import {Button} from "@/components/ui/button";
+import {PasswordInput} from "@/components/ui/password-input";
+import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage,} from "@/components/ui/form";
+import {useNavigate, useParams} from "react-router-dom";
+import {useAuthStore} from "@/store/useAuthStore";
 
 const formSchema = z
   .object({
@@ -32,6 +24,7 @@ const formSchema = z
   });
 
 export default function ResetPassword() {
+    const navigate = useNavigate();
   const { token } = useParams();
   const { resetPassword } = useAuthStore();
   const form = useForm({
@@ -43,9 +36,7 @@ export default function ResetPassword() {
   });
 
   const onSubmit = async (data) => {
-    resetPassword(token, data.password).then((response) =>
-      console.log(response),
-    );
+      resetPassword(token, data.password).then(() => navigate("/login"));
   };
 
   return (

@@ -24,7 +24,7 @@ export default function ForgotPassword() {
   });
 
   const onSubmit = async (data) => {
-    forgotPassword(data).then((response) => {
+    forgotPassword(data.email).then((response) => {
       console.log(response);
     });
     setIsSubmitted(true);
