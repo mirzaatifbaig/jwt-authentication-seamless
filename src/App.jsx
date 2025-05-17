@@ -13,30 +13,30 @@ import QRCode from "@/pages/QRCode.jsx";
 import FALogin from "@/pages/FALogin.jsx";
 
 function App() {
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <Toaster richColors position="top-right" />
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-          <Route path="/twofalogin" element={<FALogin/>}/>
-          <Route path="/qrcode" element={<QRCode/>}/>
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password/:token" element={<ResetPassword />} />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </div>
-  );
+    return (
+        <div className="min-h-screen flex items-center justify-center">
+            <Toaster richColors position="top-right"/>
+            <Navbar/>
+            <Routes>
+                <Route path="/" element={<Home/>}/>
+                <Route path="/login" element={<Login/>}/>
+                <Route path="/twofalogin" element={<FALogin/>}/>
+                <Route path="/qrcode" element={<QRCode/>}/>
+                <Route path="/signup" element={<Signup/>}/>
+                <Route path="/forgot-password" element={<ForgotPassword/>}/>
+                <Route path="/reset-password/:token" element={<ResetPassword/>}/>
+                <Route
+                    path="/dashboard"
+                    element={
+                        <ProtectedRoute>
+                            <Dashboard/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route path="*" element={<NotFound/>}/>
+            </Routes>
+        </div>
+    );
 }
 
 export default App;

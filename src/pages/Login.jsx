@@ -12,8 +12,8 @@ import {useAuthStore} from "@/store/useAuthStore";
 import {useEffect} from "react";
 
 const formSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(4, "Password must be at least 4 characters"),
+    email: z.string().email("Please enter a valid email address"),
+    password: z.string().min(4, "Password must be at least 4 characters"),
 });
 
 export default function Login() {
@@ -44,56 +44,56 @@ export default function Login() {
         });
     }
 
-  return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 max-w-3xl mx-auto py-10"
-      >
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder="user@email.com" type="email" {...field} />
-              </FormControl>
-              <FormDescription>Enter your email.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+    return (
+        <Form {...form}>
+            <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-8 max-w-3xl mx-auto py-10"
+            >
+                <FormField
+                    control={form.control}
+                    name="email"
+                    render={({field}) => (
+                        <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                                <Input placeholder="user@email.com" type="email" {...field} />
+                            </FormControl>
+                            <FormDescription>Enter your email.</FormDescription>
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
 
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <PasswordInput placeholder="*********" {...field} />
-              </FormControl>
-              <FormDescription>Enter your password.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit" disabled={isLoading}>
-          {isLoading ? "Logging in..." : "Submit"}
-        </Button>
-          <Link to={"/forgot-password"}>
-              {" "}
-              <span
-                  className={
-                      "hover:underline hover:text-cyan-900 text-sm p-3 text-cyan-600"
-                  }
-              >
+                <FormField
+                    control={form.control}
+                    name="password"
+                    render={({field}) => (
+                        <FormItem>
+                            <FormLabel>Password</FormLabel>
+                            <FormControl>
+                                <PasswordInput placeholder="*********" {...field} />
+                            </FormControl>
+                            <FormDescription>Enter your password.</FormDescription>
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
+                <Button type="submit" disabled={isLoading}>
+                    {isLoading ? "Logging in..." : "Submit"}
+                </Button>
+                <Link to={"/forgot-password"}>
+                    {" "}
+                    <span
+                        className={
+                            "hover:underline hover:text-cyan-900 text-sm p-3 text-cyan-600"
+                        }
+                    >
             {" "}
-                  Forgot Password?
+                        Forgot Password?
           </span>
-          </Link>
-      </form>
-    </Form>
-  );
+                </Link>
+            </form>
+        </Form>
+    );
 }
