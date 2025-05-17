@@ -3,7 +3,11 @@ import {useNavigate} from "react-router-dom";
 import {useAuthStore} from "@/store/useAuthStore.jsx";
 import {toast} from "sonner";
 import {Button} from "@/components/ui/button";
-import {InputOTP, InputOTPGroup, InputOTPSlot,} from "@/components/ui/input-otp";
+import {
+    InputOTP,
+    InputOTPGroup,
+    InputOTPSlot,
+} from "@/components/ui/input-otp";
 import Loading from "@/components/Loading.jsx";
 
 export default function QRCode() {
