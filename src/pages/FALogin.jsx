@@ -21,14 +21,13 @@ export default function FALogin() {
         }
         await login2FA(otp).then((response) => {
             navigate("/dashboard");
-        })
+        });
     };
     const navigate = useNavigate();
     const handleLogout = () => {
-        logout()
-        navigate("/login")
-
-    }
+        logout();
+        navigate("/login");
+    };
     return (
         <div className="flex justify-center items-center min-h-screen bg-muted px-4">
             <Card className="w-full max-w-md">
@@ -58,7 +57,11 @@ export default function FALogin() {
                             Submit OTP
                         </Button>
 
-                        <Button variant="destructive" className="w-full" onClick={handleLogout}>
+                        <Button
+                            variant="destructive"
+                            className="w-full"
+                            onClick={handleLogout}
+                        >
                             Logout
                         </Button>
                     </div>

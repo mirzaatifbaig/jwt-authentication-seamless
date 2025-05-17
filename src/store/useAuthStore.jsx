@@ -19,7 +19,7 @@ export const useAuthStore = create(
         set({ isLoading: true, error: null });
 
         try {
-          const response = await api.post(`/signup`, {name, email, password})
+          const response = await api.post(`/signup`, {name, email, password});
 
           if (response?.error === "Email already in use") {
             toast.error("Email already in use");
@@ -60,8 +60,9 @@ export const useAuthStore = create(
       login: async (email, password) => {
         set({ isLoading: true, error: null });
         try {
-          const response = await api.post(`/login`, {email, password})
-          const {accessToken, tempToken, user, requires2FA} = response?.data || ""
+          const response = await api.post(`/login`, {email, password});
+          const {accessToken, tempToken, user, requires2FA} =
+          response?.data || "";
           set({
             tempToken,
             accessToken,
@@ -227,7 +228,7 @@ export const useAuthStore = create(
                 headers: {
                   Authorization: `Bearer ${tempToken}`,
                 },
-              }
+              },
           );
           const {accessToken} = response.data;
 
@@ -241,7 +242,8 @@ export const useAuthStore = create(
           toast.success("2FA Login Successful!");
           return response.data;
         } catch (error) {
-          const errorMessage = error?.response?.data?.error || "2FA verification failed.";
+          const errorMessage =
+              error?.response?.data?.error || "2FA verification failed.";
           toast.error(errorMessage);
           set({isLoading: false, error: errorMessage});
           throw new Error(errorMessage);
