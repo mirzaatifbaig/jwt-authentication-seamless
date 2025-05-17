@@ -1,15 +1,13 @@
-<p align="center">
-  <img width="280" src="https://skillicons.dev/icons?i=react,ts,vite,tailwind,eslint" alt="React, TypeScript, Vite, Tailwind, ESLint" />
-</p>
+<p align="center"><img align="center" width="280" src="https://skillicons.dev/icons?i=react"/></p>
+
+<div align="center">React JS full-stack app.</div>
+</br>
 
 <div align="center">React JS full-stack app with advanced auth & 2FA features.</div>
 <br />
 
 <div align="center">
-  <img src="https://skillicons.dev/icons?i=zustand,axios,zod,eslint,html,css" alt="zustand, axios, zod, eslint, html, css" />
-  <img width="30" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/radix-ui/radix-ui-original.svg" alt="radix-ui" title="Radix UI" />
-  <img width="30" src="https://raw.githubusercontent.com/lucide-icons/lucide/master/icons/check.svg" alt="lucide-react" title="Lucide React" />
-  <img width="30" src="https://cdn.jsdelivr.net/gh/vitejs/awesome-vite@main/icons/vite.svg" alt="vite" title="Vite" />
+  <img src="https://skillicons.dev/icons?i=tailwind,ts,vite,express,nodejs,sqlite,vercel,webstorm,pnpm,html,css" />
 </div>
 
 ---
