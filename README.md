@@ -20,10 +20,9 @@
 ├── src/
 │   ├── components/        # UI Components (Navbar, ProtectedRoute, etc.)
 │   ├── pages/             # Route components (Login, Signup, Dashboard, etc.)
-│   ├── routes/            # App routing logic
-│   ├── stores/            # Zustand global state
-│   ├── utils/             # Helpers & services (API calls, auth helpers)
-│   └── styles/            # Tailwind CSS & custom styles
+│   ├── api/               # Azios routing logic
+│   ├── store/             # Zustand global state
+│   ├── pages/             # Helpers & services (API calls, auth helpers)
 └── README.md
 
 ````
