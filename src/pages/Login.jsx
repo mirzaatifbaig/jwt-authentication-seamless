@@ -9,6 +9,7 @@ import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, Form
 import {Input} from "@/components/ui/input";
 import {PasswordInput} from "@/components/ui/password-input";
 import {useAuthStore} from "@/store/useAuthStore";
+import {useEffect} from "react";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -16,26 +17,32 @@ const formSchema = z.object({
 });
 
 export default function Login() {
-  const navigate = useNavigate();
-    const {login, twoFactorEnabled, isLoading, isAuthenticated} =
-        useAuthStore();
-    if (isAuthenticated) navigate("/dashboard");
-  const form = useForm({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
+    const navigate = useNavigate();
+    const {login, isLoading, isAuthenticated, isLoadingAuth} = useAuthStore();
 
-  function onSubmit(data) {
-      const response = login(data.email, data.password).then(() => {
-          if (twoFactorEnabled) {
-              navigate("/FALogin");
-          } else navigate("/dashboard");
-      });
+    useEffect(() => {
+        if (!isLoadingAuth && isAuthenticated) {
+            navigate("/dashboard");
+        }
+    }, [isAuthenticated, isLoadingAuth, navigate]);
 
-  }
+    const form = useForm({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            email: "",
+            password: "",
+        },
+    });
+
+    function onSubmit(data) {
+        login(data.email, data.password).then((response) => {
+            if (response?.requires2FA) {
+                navigate("/twofalogin");
+            } else {
+                navigate("/dashboard");
+            }
+        });
+    }
 
   return (
     <Form {...form}>

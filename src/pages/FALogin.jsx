@@ -4,6 +4,7 @@ import {toast} from "sonner";
 import {InputOTP, InputOTPGroup, InputOTPSlot,} from "@/components/ui/input-otp";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {useNavigate} from "react-router-dom";
 
 export default function FALogin() {
     const {user, login2FA, logout} = useAuthStore();
@@ -18,9 +19,16 @@ export default function FALogin() {
             toast.error("Enter a 6-digit code.");
             return;
         }
-        await login2FA(otp);
+        await login2FA(otp).then((response) => {
+            navigate("/dashboard");
+        })
     };
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        logout()
+        navigate("/login")
 
+    }
     return (
         <div className="flex justify-center items-center min-h-screen bg-muted px-4">
             <Card className="w-full max-w-md">
@@ -50,7 +58,7 @@ export default function FALogin() {
                             Submit OTP
                         </Button>
 
-                        <Button variant="destructive" className="w-full" onClick={logout}>
+                        <Button variant="destructive" className="w-full" onClick={handleLogout}>
                             Logout
                         </Button>
                     </div>

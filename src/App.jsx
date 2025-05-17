@@ -20,7 +20,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-          <Route path="/FALogin" element={<FALogin/>}/>
+          <Route path="/twofalogin" element={<FALogin/>}/>
           <Route path="/qrcode" element={<QRCode/>}/>
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />

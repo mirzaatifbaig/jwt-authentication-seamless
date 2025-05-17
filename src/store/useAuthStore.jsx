@@ -6,6 +6,7 @@ import {toast} from "sonner";
 export const useAuthStore = create(
   persist(
     (set, get) => ({
+      tempToken: null,
       accessToken: null,
       twoFactorEnabled: false,
       qrCode: null,
@@ -18,7 +19,7 @@ export const useAuthStore = create(
         set({ isLoading: true, error: null });
 
         try {
-          const response = await api.post(`/signup`, { name, email, password });
+          const response = await api.post(`/signup`, {name, email, password})
 
           if (response?.error === "Email already in use") {
             toast.error("Email already in use");
@@ -33,8 +34,8 @@ export const useAuthStore = create(
           const { accessToken, user } = response.data;
 
           set({
-            accessToken,
-            user,
+            accessToken: accessToken,
+            user: user,
             isAuthenticated: true,
             isLoading: false,
             error: null,
@@ -59,11 +60,12 @@ export const useAuthStore = create(
       login: async (email, password) => {
         set({ isLoading: true, error: null });
         try {
-          const response = await api.post(`/login`, { email, password });
-          console.log(response.data);
-          const { accessToken, user } = response.data;
+          const response = await api.post(`/login`, {email, password})
+          const {accessToken, tempToken, user, requires2FA} = response?.data || ""
           set({
+            tempToken,
             accessToken,
+            twoFactorEnabled: requires2FA,
             user,
             isAuthenticated: true,
             isLoading: false,
@@ -209,25 +211,37 @@ export const useAuthStore = create(
           throw new Error(errorMessage);
         }
       },
-      login2FA: async (token) => {
+      login2FA: async (otpCode) => {
         set({isLoading: true, error: null});
+
         try {
-          const response = await api.post(`/2fa/login`, {
-            token: token,
-            userId: get().user.id,
-          });
-          const {accessToken, user} = response.data;
+          const tempToken = get().tempToken;
+          if (!tempToken) {
+            throw new Error("Missing temporary token for 2FA.");
+          }
+
+          const response = await api.post(
+              `/2fa/login`,
+              {token: otpCode},
+              {
+                headers: {
+                  Authorization: `Bearer ${tempToken}`,
+                },
+              }
+          );
+          const {accessToken} = response.data;
+
           set({
             accessToken,
-            user,
             isAuthenticated: true,
+            tempToken: null, // clear temp token
             isLoading: false,
             error: null,
           });
           toast.success("2FA Login Successful!");
           return response.data;
         } catch (error) {
-          const errorMessage = error?.message || "2FA verification failed.";
+          const errorMessage = error?.response?.data?.error || "2FA verification failed.";
           toast.error(errorMessage);
           set({isLoading: false, error: errorMessage});
           throw new Error(errorMessage);
