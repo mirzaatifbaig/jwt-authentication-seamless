@@ -255,7 +255,7 @@ export const useAuthStore = create(
               const response = await api.post(`/2fa/verify-setup`, {
                 userId: get().user.id,
                 token: token,
-              })
+              });
               toast.success(response.data.message);
               set({
                 qrCode: response.data.qrCode,
@@ -264,7 +264,8 @@ export const useAuthStore = create(
               });
               return response.data.qrCode;
             } catch (error) {
-              const errorMessage = error?.response.data.error || "Error enabling 2FA.";
+              const errorMessage =
+                  error?.response.data.error || "Error enabling 2FA.";
               toast.error(errorMessage);
               set({isLoading: false, error: errorMessage});
               throw new Error(errorMessage);
