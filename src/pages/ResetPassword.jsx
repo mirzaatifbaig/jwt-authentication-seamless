@@ -3,7 +3,15 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {Button} from "@/components/ui/button";
 import {PasswordInput} from "@/components/ui/password-input";
-import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage,} from "@/components/ui/form";
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
 import {useNavigate, useParams} from "react-router-dom";
 import {useAuthStore} from "@/store/useAuthStore";
 
@@ -22,7 +30,6 @@ const formSchema = z
         message: "Passwords don't match",
         path: ["confirmPassword"],
     });
-
 export default function ResetPassword() {
     const navigate = useNavigate();
     const {token} = useParams();
@@ -34,11 +41,9 @@ export default function ResetPassword() {
             confirmPassword: "",
         },
     });
-
     const onSubmit = async (data) => {
         resetPassword(token, data.password).then(() => navigate("/login"));
     };
-
     return (
         <div className="max-w-3xl mx-auto py-10">
             <h1 className="text-2xl font-bold mb-4">Reset Password</h1>

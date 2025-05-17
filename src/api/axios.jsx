@@ -5,7 +5,6 @@ const api = axios.create({
     baseURL: "http://localhost:5002/api/auth",
     withCredentials: true,
 });
-
 api.interceptors.request.use(
     (config) => {
         const accessToken = useAuthStore.getState().accessToken;
@@ -16,10 +15,8 @@ api.interceptors.request.use(
     },
     (error) => Promise.reject(error),
 );
-
 let isRefreshing = false;
 let failedQueue = [];
-
 const processQueue = (error, token = null) => {
     failedQueue.forEach((prom) => {
         if (error) {
@@ -30,7 +27,6 @@ const processQueue = (error, token = null) => {
     });
     failedQueue = [];
 };
-
 api.interceptors.response.use(
     (response) => response,
     async (error) => {
@@ -54,10 +50,8 @@ api.interceptors.response.use(
                         return Promise.reject(err);
                     });
             }
-
             originalRequest._retry = true;
             isRefreshing = true;
-
             try {
                 const newAccessToken = await authStore.refreshTokenFn();
                 if (newAccessToken) {

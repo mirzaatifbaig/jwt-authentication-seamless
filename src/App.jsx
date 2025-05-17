@@ -15,7 +15,7 @@ import FALogin from "@/pages/FALogin.jsx";
 function App() {
     return (
         <div className="min-h-screen flex items-center justify-center">
-            <Toaster richColors position="top-right"/>
+            <Toaster duration={1000} richColors position="top-left"/>
             <Navbar/>
             <Routes>
                 <Route path="/" element={<Home/>}/>
@@ -31,8 +31,7 @@ function App() {
                         <ProtectedRoute>
                             <Dashboard/>
                         </ProtectedRoute>
-                    }
-                />
+                    }/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>
         </div>
