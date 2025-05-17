@@ -2,6 +2,7 @@ import {Home} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {useAuthStore} from "@/store/useAuthStore";
 import {useNavigate} from "react-router-dom";
+import DarkMode from "@/components/DarkMode.jsx";
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -12,6 +13,7 @@ const Navbar = () => {
             <div className="flex items-center space-x-2">
                 <Home className="h-6 w-6 text-primary"/>
                 <span className="text-lg font-semibold m-4">App</span>
+                <DarkMode/>
             </div>
             <div className="flex items-center space-x-2 mx-4">
                 {isAuthenticated && <Button onClick={logout}>Logout</Button>}
