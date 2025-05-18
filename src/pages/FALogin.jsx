@@ -1,11 +1,7 @@
 import {useAuthStore} from "@/store/useAuthStore.jsx";
 import {useEffect, useState} from "react";
 import {toast} from "sonner";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
+import {InputOTP, InputOTPGroup, InputOTPSlot,} from "@/components/ui/input-otp";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {useNavigate} from "react-router-dom";
@@ -16,6 +12,7 @@ export default function FALogin() {
   useEffect(() => {
     toast.message("You have 2FA enabled!");
   }, []);
+  const navigate = useNavigate();
   const handleSubmit = async () => {
     if (otp.length !== 6) {
       toast.error("Enter a 6-digit code.");
@@ -25,7 +22,6 @@ export default function FALogin() {
       navigate("/dashboard");
     });
   };
-  const navigate = useNavigate();
   const handleLogout = async () => {
     await logout();
     navigate("/login");

@@ -39,7 +39,7 @@ export const useAuthStore = create(
               return response.data;
             } catch (error) {
               const errorMessage =
-                  error?.message || "Error signing up. Please try again.";
+                  error?.response?.data?.message || error?.message || "Error signing up. Please try again.";
               set({
                 error: errorMessage,
                 isLoading: false,
@@ -108,7 +108,7 @@ export const useAuthStore = create(
             set({isLoadingAuth: true, error: null});
             try {
               const response = await api.post(`/refresh-token`);
-              const accessToken = response?.data.accessToken;
+              const accessToken = response?.data?.accessToken;
               set({
                 accessToken: accessToken,
                 isAuthenticated: true,
