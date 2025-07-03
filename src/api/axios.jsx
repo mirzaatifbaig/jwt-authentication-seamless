@@ -2,7 +2,7 @@ import axios from "axios";
 import {useAuthStore} from "@/store/useAuthStore";
 
 const api = axios.create({
-    baseURL: "http://localhost:5002/api/auth",
+    baseURL: "https://vercel-backend-git-main-mirzaatifbaigs-projects.vercel.app/api/auth",
     withCredentials: true,
 });
 api.interceptors.request.use(
